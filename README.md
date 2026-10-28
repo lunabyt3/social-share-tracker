@@ -56,9 +56,8 @@ Start Apache and MySQL from the XAMPP Control Panel.
 ### 3. Create the Database
 
 1. Open phpMyAdmin at `http://localhost/phpmyadmin`.
-2. Create a database named `social_share_tracker`.
-3. Select the new database.
-4. Import `database/schema.sql`.
+2. Click on the `Import` tab.
+3. At File to import section, choose file `database/schema.sql` to import.
 
 If your database uses a different name, update the database configuration accordingly.
 

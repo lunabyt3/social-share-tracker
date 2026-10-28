@@ -11,6 +11,20 @@ A PHP and MySQL web application that tracks social sharing activity and displays
 - Analytics dashboard with total shares and charts
 - Filter analytics by date range and social platform
 
+## Screenshots 📸
+
+### Front-End Website
+
+![Front-End Website](screenshots/frontendwebsite.png)
+
+### Admin Dashboard Login
+
+![Admin Dashboard Login](screenshots/admindashboard.png)
+
+### Analytics Filters
+
+![Analytics Filters](screenshots/analytics-filters.png)
+
 ## Technologies Used
 
 - PHP
@@ -23,6 +37,7 @@ A PHP and MySQL web application that tracks social sharing activity and displays
 
 - XAMPP or another environment that supports PHP and MySQL
 - A web browser
+- Visual Studio Code or another code editor (optional)
 
 ## Installation and Setup
 
@@ -47,6 +62,11 @@ Start Apache and MySQL from the XAMPP Control Panel.
 
 If your database uses a different name, update the database configuration accordingly.
 
+The database should contain the tables required by the application, including:
+
+- social_shares
+- admin_users
+
 ### 4. Configure the Database Connection
 
 Open `config/database.php` and update the database host, name, username, and password to match your local environment.
@@ -64,6 +84,8 @@ For security, administrator credentials are not included in this repository.
 5. After the account is created successfully, delete or disable `create-admin.php`.
 
 The password is stored as a hash using PHP's `password_hash()` function.
+
+The initialization script only allows account creation when the admin_users table does not already contain an admin account.
 
 ### 6. Run the Application
 

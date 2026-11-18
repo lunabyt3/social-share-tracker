@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Please enter your username and password.';
     } else {
         $ipAddress = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+
         $now = date('Y-m-d H:i:s');
 
         // Check existing login attempt record
@@ -250,7 +251,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             margin-top: 10px;
         }
 
-        button {
+        #submit {
             cursor: pointer;
             background-color: #1877f2;
             border: none;
@@ -259,6 +260,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .error {
             color: #b00020;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-container input {
+            padding-right: 45px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 8px;
+            top: 40%;
+            transform: translateY(-50%);
+            width: auto;
+            margin: 0;
+            padding: 5px;
+            border: none;
+            background: transparent;
+            color: #10264f;
+            cursor: pointer;
+        }
+
+        .password-toggle:hover {
+            background: transparent;
         }
     </style>
 </head>
@@ -286,16 +313,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     placeholder="Username" required>
             </div>
 
-            <div class="input-container">
+            <div class="input-container password-container">
                 <i class="fa fa-lock icon"></i>
+
                 <input type="password" id="password" name="password" autocomplete="current-password"
                     placeholder="Password" required>
+
+                <button type="button" id="togglePassword" class="password-toggle" aria-label="Show password">
+                    <i class="fa fa-eye"></i>
+                </button>
             </div>
-            <button type="submit">Login</button>
+            <button id="submit" type="submit">Login</button>
         </form>
         <a href="../">Back to Website</a>
     </div>
 
 </body>
+
+<script>
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
+
+    togglePassword.addEventListener('click', function () {
+        const isPassword = passwordInput.type === 'password';
+
+        passwordInput.type = isPassword ? 'text' : 'password';
+
+        this.innerHTML = isPassword
+            ? '<i class="fa fa-eye-slash"></i>'
+            : '<i class="fa fa-eye"></i>';
+
+        this.setAttribute(
+            'aria-label',
+            isPassword ? 'Hide password' : 'Show password'
+        );
+    });
+</script>
 
 </html>

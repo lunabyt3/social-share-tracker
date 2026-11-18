@@ -319,8 +319,6 @@ $total_Email_shares = (int) $shares['email_shares'];
                 }
 
                 const data = await response.json();
-                console.log('Response status:', response.status);
-                console.log('Analytics data:', data);
 
                 // Destroy existing charts before rendering new data
                 if (platformChart) platformChart.destroy();

@@ -93,8 +93,6 @@ try {
     );
     $stmt->execute($params);
     $platformStats = $stmt->fetchAll();
-    error_log('Analytics params: ' . json_encode($params));
-    error_log('Platform stats: ' . json_encode($platformStats));
 
 
     // LineChart (Daily): Check and get the number of clicks for each date

@@ -7,7 +7,7 @@
 
     <title>ShareTrack Public Page</title>
 
-    <link rel="stylesheet" href="assets\css\style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <!-- Add icon library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css"
         integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg=="
@@ -22,7 +22,7 @@
         <!-- Navigation Bar -->
         <nav>
             <ul>
-                <li><a href="javascript:void(0)">Home</a></li>
+                <li><a href="index.php" aria-current="page">Home</a></li>
             </ul>
         </nav>
     </header>

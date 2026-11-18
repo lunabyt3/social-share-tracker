@@ -164,6 +164,16 @@ $total_Email_shares = (int) $shares['email_shares'];
             margin: 0 10px;
             /* Adds spacing between icons */
         }
+
+        .empty-state {
+            display: none;
+            min-height: 250px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+        }
     </style>
 </head>
 
@@ -225,12 +235,13 @@ $total_Email_shares = (int) $shares['email_shares'];
             <form id="filters" class="filters">
                 <label>
                     Start date
-                    <input type="date" name="start_date"
+                    <input type="date" name="start_date" max="<?= date('Y-m-d') ?>"
                         value="<?= htmlspecialchars(date('Y-m-d', strtotime('-6 days'))) ?>" required>
                 </label>
                 <label>
                     End date
-                    <input type="date" name="end_date" value="<?= htmlspecialchars(date('Y-m-d')) ?>" required>
+                    <input type="date" name="end_date" max="<?= date('Y-m-d') ?>"
+                        value="<?= htmlspecialchars(date('Y-m-d')) ?>" required>
                 </label>
                 <label>
                     Platform
@@ -253,12 +264,18 @@ $total_Email_shares = (int) $shares['email_shares'];
                 <h2>Clicks by platform</h2>
                 <div class="chart-container">
                     <canvas id="platformChart"></canvas>
+                    <div id="platformEmptyState" class="empty-state">
+                        No data available for the selected filters.
+                    </div>
                 </div>
             </section>
             <section class="panel">
                 <h2>Clicks by date</h2>
                 <div class="chart-container">
                     <canvas id="dailyChart"></canvas>
+                    <div id="dailyEmptyState" class="empty-state">
+                        No data available for the selected filters.
+                    </div>
                 </div>
             </section>
         </div>
@@ -305,6 +322,20 @@ $total_Email_shares = (int) $shares['email_shares'];
                 console.log('Response status:', response.status);
                 console.log('Analytics data:', data);
 
+                // Destroy existing charts before rendering new data
+                if (platformChart) platformChart.destroy();
+                if (dailyChart) dailyChart.destroy();
+
+
+                // Check whether the selected filters return any data
+                const hasPlatformData = data.platform_stats && data.platform_stats.length > 0;
+                const hasDailyData = data.daily_stats && data.daily_stats.length > 0;
+
+                if (!hasPlatformData && !hasDailyData) {
+                    status.textContent = 'No data available for the selected filters.';
+                    return;
+                }
+
                 // BarChart (Platform)
                 const platformLabels = data.platform_stats.map(
                     item => item.platform
@@ -321,8 +352,6 @@ $total_Email_shares = (int) $shares['email_shares'];
                     item => Number(item.total)
                 );
 
-                if (platformChart) platformChart.destroy();
-                if (dailyChart) dailyChart.destroy();
 
                 // BarChart-Apply color based on the specific X label text
                 const platformColors = {

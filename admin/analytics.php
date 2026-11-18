@@ -19,6 +19,7 @@ $startDate = $_GET['start_date'] ?? date('Y-m-d', strtotime('-6 days'));
 $endDate = $_GET['end_date'] ?? date('Y-m-d');
 $platform = $_GET['platform'] ?? 'all';
 
+// Restrict platform filters to supported values
 $allowedPlatforms = [
     'all',
     'facebook',
@@ -32,10 +33,32 @@ $allowedPlatforms = [
 // Do validation: date, platform
 $datePattern = '/^\d{4}-\d{2}-\d{2}$/';
 
+$startDateValid = false;
+$endDateValid = false;
+
+if (preg_match($datePattern, $startDate)) {
+    $date = DateTime::createFromFormat('Y-m-d', $startDate);
+
+    $startDateValid = $date !== false
+        && $date->format('Y-m-d') === $startDate;
+}
+
+if (preg_match($datePattern, $endDate)) {
+    $date = DateTime::createFromFormat('Y-m-d', $endDate);
+
+    $endDateValid = $date !== false
+        && $date->format('Y-m-d') === $endDate;
+}
+
+$today = date('Y-m-d');
+
+// Reject invalid dates, reversed date ranges, future dates, and unsupported platforms
 if (
-    !preg_match($datePattern, $startDate) ||
-    !preg_match($datePattern, $endDate) ||
+    !$startDateValid ||
+    !$endDateValid ||
     $startDate > $endDate ||
+    $startDate > $today ||
+    $endDate > $today ||
     !in_array($platform, $allowedPlatforms, true)
 ) {
     http_response_code(400);
@@ -54,7 +77,7 @@ try {
         ':end_date' => $endDate
     ];
 
-    // By platform
+    // By platform: Apply platform filtering only when a specific platform is selected
     if ($platform !== 'all') {
         $where .= ' AND platform = :platform';
         $params[':platform'] = $platform;

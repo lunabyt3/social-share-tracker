@@ -7,6 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
         button.addEventListener('click', async () => {
             const platform = button.dataset.platform;
 
+            // Prevent repeated clicks while the tracking request is in progress.
+            button.disabled = true;
+            message.textContent = '';
+
             // Retrieve the current page URL and title for social sharing.
             const pageUrl = window.location.href;
             const title = document.title;
@@ -52,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     break;
 
                 default:
+                    button.disabled = false;
                     return;
             }
 
@@ -79,6 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error('Share tracking error:', error);
                 message.textContent =
                     'Unable to record the share click. Opening share anyway.';
+            } finally {
+                // Re-enable the button after the tracking request completes.
+                button.disabled = false;
             }
 
             if (platform === 'email') {

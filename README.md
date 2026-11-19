@@ -11,6 +11,15 @@ A PHP and MySQL web application that tracks social sharing activity and displays
 - Analytics dashboard with total shares and charts
 - Filter analytics by date range and social platform
 
+## Improvements
+
+- Added rate limiting for repeated failed admin login attempts to reduce brute-force login attempts.
+- Improved dashboard filtering and empty-state handling when no analytics data is available.
+- Added validation for share tracking requests, including allowed platforms and page URL validation.
+- Improved public-page accessibility with clearer navigation.
+- Prevented repeated share clicks while a share tracking request is in progress.
+- Improved session handling by regenerating the session ID after successful admin login.
+
 ## Screenshots 📸
 
 ### Front-End Website
@@ -65,6 +74,7 @@ The database should contain the tables required by the application, including:
 
 - social_shares
 - admin_users
+- login_attempts
 
 ### 4. Configure the Database Connection
 
@@ -94,19 +104,38 @@ Open the Front-End Website:
 
 Open the Backend Admin Webpage:
 
-`http://localhost/social-share-tracker/admin`
+`http://localhost/social-share-tracker/admin/`
 
 For Admin page need to Log in using the administrator credentials created in Step 5.
 
 ## How to Test
 
+### Public Sharing
+
 1. Open the Front-End Website.
 2. Click a social sharing button.
-3. Check that the share event is recorded in the database.
-4. Log in to the admin dashboard (Backend Admin Webpage).
-5. Review the total share count and analytics charts.
-6. Test the date range and social platform filters.
-7. Log out and verify that protected dashboard pages require authentication.
+3. Verify that the share action opens the corresponding sharing service.
+4. Check that the share event is recorded in the database.
+5. Try clicking a share button repeatedly and verify that duplicate tracking requests are not triggered while a request is in progress.
+
+### Admin Login
+
+1. Open the Admin Login page.
+2. Log in using the administrator credentials.
+3. Verify that invalid credentials display a generic error message.
+4. Enter incorrect credentials repeatedly.
+5. Verify that repeated failed attempts trigger the login rate limit. (maxAttempts=5)
+6. Verify that login attempts are allowed again after the lockout period expires.
+7. Log out and verify that protected admin pages require authentication.
+
+### Analytics Dashboard
+
+1. Review the total share count and analytics charts.
+2. Test the date range filter.
+3. Test the social platform filter.
+4. Test both filters together.
+5. Select filters that return no data and verify that the dashboard displays an appropriate empty state.
+6. Clear the filters and verify that the dashboard returns to the default view.
 
 ## Security Notes
 

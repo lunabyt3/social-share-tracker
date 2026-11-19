@@ -21,3 +21,15 @@ CREATE TABLE admin_users (
     password_hash VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE login_attempts (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    ip_address VARCHAR(45) NOT NULL,
+    attempt_count INT UNSIGNED NOT NULL DEFAULT 0,
+    last_attempt_at TIMESTAMP NULL DEFAULT NULL,
+    locked_until TIMESTAMP NULL DEFAULT NULL,
+
+    UNIQUE KEY uq_login_attempt (username, ip_address),
+    INDEX idx_locked_until (locked_until)
+);
